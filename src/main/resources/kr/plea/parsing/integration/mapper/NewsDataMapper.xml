@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.plea.parsing.integration.mapper.NewsDataMapper">
+
+    <insert id="insertHeader">
+        INSERT INTO header (action, service_type, content_id, send_date, send_time)
+        VALUES (#{action}, #{serviceType}, #{contentID}, #{sendDate}, #{sendTime})
+    </insert>
+
+    <insert id="insertMetadata">
+        INSERT INTO metadata (content_id, category_code, source, writer, desk_code, desk_value)
+        VALUES (#{contentID}, #{metadata.category.code}, #{metadata.source}, #{metadata.writer}, #{metadata.desk.code}, #{metadata.desk.value})
+    </insert>
+
+    <insert id="insertNewsContent">
+        INSERT INTO news_content (content_id, title, sub_title, comment, body)
+        VALUES (#{contentID},  #{newsContent.title}, #{newsContent.subTitle}, #{newsContent.comment}, #{newsContent.body})
+    </insert>
+
+    <insert id="insertAppendData">
+        INSERT INTO append_data (content_id, mimetype, title, caption, file_name)
+        VALUES (#{contentID}, #{appendData.mimeType}, #{appendData.title}, #{appendData.caption}, #{appendData.fileName})
+    </insert>
+
+</mapper>
