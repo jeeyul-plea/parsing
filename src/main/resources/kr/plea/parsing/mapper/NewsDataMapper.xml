@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.plea.parsing.mapper.NewsDataMapper">
+
+    <sql id="contentColumn">
+         content_id,
+         action,
+         service_type,
+         send_date,
+         send_time,
+         source,
+         writer,
+         category_code,
+         desk_code,
+         desk_value,
+         title,
+         sub_title,
+         comment,
+         body
+    </sql>
+
+    <sql id="contentValue">
+        #{header.contentID},
+        #{header.action},
+        #{header.serviceType},
+        #{header.sendDate},
+        #{header.sendTime},
+        #{metadata.source},
+        #{metadata.writer},
+        #{metadata.category.code},
+        #{metadata.desk.code},
+        #{metadata.desk.value},
+        #{newsContent.title},
+        #{newsContent.subTitle},
+        #{newsContent.comment},
+        #{newsContent.body}
+    </sql>
+
+    <sql id="appendDataColumn">
+         content_id,
+         mime_type,
+         title,
+         caption,
+         file_name
+    </sql>
+
+    <sql id="appendDataValue">
+        #{contentID},
+        #{appendData.mimeType},
+        #{appendData.title},
+        #{appendData.caption},
+        #{appendData.fileName}
+    </sql>
+
+    <insert id="insertContent">
+        INSERT INTO TB_NEWS_CONTENT
+        (<include refid="contentColumn"></include>)
+        VALUES (<include refid="contentValue"></include>)
+    </insert>
+
+    <insert id="insertAppendData">
+        INSERT INTO TB_NEWS_APPEND_DATA
+        (<include refid="appendDataColumn"></include>)
+        VALUES (<include refid="appendDataValue"></include>)
+    </insert>
+
+    <insert id="insertContentHistory">
+        INSERT INTO TB_NEWS_HISTORY
+        (<include refid="contentColumn"></include>,
+        is_used,
+        is_deleted)
+        VALUES (<include refid="contentValue"></include>,
+        true,
+        false)
+    </insert>
+
+    <insert id="insertAppendDataHistory">
+        INSERT INTO TB_APPEND_DATA_HISTORY
+        (<include refid="appendDataColumn"></include>,
+        is_used,
+        is_deleted)
+        VALUES (<include refid="appendDataValue"></include>,
+        true,
+        false)
+    </insert>
+
+    <select id="findContent" resultType="kr.plea.parsing.data.dto.NewsContentFindDto">
+        SELECT *
+        FROM TB_NEWS_HISTORY
+        WHERE content_id = #{contentD}
+          and is_used = true
+    </select>
+
+    <update id="updateOldContent">
+        UPDATE TB_NEWS_HISTORY
+        SET is_used = false
+        WHERE content_id = #{contentID}
+          and is_used = true
+    </update>
+
+    <update id="updateOldAppendData">
+        UPDATE TB_APPEND_DATA_HISTORY
+        SET is_used = false
+        WHERE content_id = #{contentID}
+          and is_used = true
+    </update>
+
+    <select id="findOne" resultType="kr.plea.parsing.data.dto.NewsContentFindDto">
+        SELECT *
+        FROM TB_NEWS_CONTENT
+        WHERE content_id = #{contentD}
+    </select>
+
+    <update id="setContentDeleteState">
+        UPDATE TB_NEWS_HISTORY
+        SET is_used = false,
+            is_deleted = true
+        WHERE content_id = #{contentID}
+    </update>
+
+    <update id="setAppendDateDeleteState">
+        UPDATE TB_APPEND_DATA_HISTORY
+        SET is_used = false,
+            is_deleted = true
+        WHERE content_id = #{contentID}
+    </update>
+</mapper>

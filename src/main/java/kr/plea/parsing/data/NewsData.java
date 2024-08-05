@@ -1,4 +1,4 @@
-package kr.plea.parsing.integration.data;
+package kr.plea.parsing.data;
 
 import java.util.List;
 
@@ -8,9 +8,12 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NewsData {
 	@JsonProperty("Header")
@@ -22,7 +25,12 @@ public class NewsData {
 	@JsonProperty("NewsContent")
 	private NewsContent newsContent;
 
+	public NewsData(NewsData data) {
+		this.header = header;
+	}
+
 	@Data
+	@NoArgsConstructor
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Header {
 		@JsonProperty("Action")
@@ -39,11 +47,10 @@ public class NewsData {
 
 		@JsonProperty("SendTime")
 		private String sendTime;
-
-
 	}
 
 	@Data
+	@NoArgsConstructor
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Metadata {
 		@JsonProperty("Category")
@@ -59,12 +66,14 @@ public class NewsData {
 		private Desk desk;
 
 		@Data
+		@NoArgsConstructor
 		public static class Category {
 			@JacksonXmlProperty(isAttribute = true, localName = "code")
 			private String code;
 		}
 
 		@Data
+		@NoArgsConstructor
 		public static class Desk {
 			@JacksonXmlProperty(isAttribute = true, localName = "code")
 			private String code;
@@ -75,6 +84,7 @@ public class NewsData {
 	}
 
 	@Data
+	@NoArgsConstructor
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class NewsContent {
 		@JsonProperty("Title")
@@ -95,9 +105,10 @@ public class NewsData {
 	}
 
 	@Data
+	@NoArgsConstructor
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class AppendData {
-		@JacksonXmlProperty(isAttribute = true, localName = "mimeType")
+		@JacksonXmlProperty(isAttribute = true, localName = "mimetype")
 		private String mimeType;
 
 		@JacksonXmlProperty(localName = "Title")

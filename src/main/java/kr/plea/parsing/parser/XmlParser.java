@@ -1,11 +1,13 @@
-package kr.plea.parsing.integration.parser;
+package kr.plea.parsing.parser;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
-import kr.plea.parsing.integration.data.NewsData;
+import kr.plea.parsing.data.NewsData;
 import lombok.RequiredArgsConstructor;
 
 @Component

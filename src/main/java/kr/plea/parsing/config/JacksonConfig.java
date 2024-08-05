@@ -1,4 +1,4 @@
-package kr.plea.parsing.integration.config;
+package kr.plea.parsing.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
