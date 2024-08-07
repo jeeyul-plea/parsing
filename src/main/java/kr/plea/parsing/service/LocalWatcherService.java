@@ -69,14 +69,10 @@ public class LocalWatcherService implements NewsFileService {
 				String fileNameStr = filename.toString().toLowerCase();
 
 				if (fileNameStr.endsWith(".xml")) {
-					if (StandardWatchEventKinds.ENTRY_CREATE.equals(kind)) {
+					if (StandardWatchEventKinds.ENTRY_CREATE.equals(kind)
+						|| StandardWatchEventKinds.ENTRY_MODIFY.equals(kind)) {
 						createProcess(file);
-					} else if (StandardWatchEventKinds.ENTRY_MODIFY.equals(kind)) {
-						updateProcess(file);
 					}
-					// } else if (StandardWatchEventKinds.ENTRY_DELETE.equals(kind)) {
-					// 	deleteProcess(file);
-					// }
 				}
 
 			}
@@ -92,12 +88,15 @@ public class LocalWatcherService implements NewsFileService {
 	@Override
 	public void createProcess(File xmlFile) {
 		try {
-			log.info("------------------ start create process ------------------");
+			log.info("------------------ watcher operated ------------------");
 			NewsData data = xmlParser.parseXml(xmlFile);
 			String contentID = data.getHeader().getContentID();
 			Path dirPath = Paths.get("C:\\newsData\\out", contentID);
 			// ContentId로 폴더 생성
-			Files.createDirectories(dirPath);
+			if (!Files.exists(dirPath)) {
+				Files.createDirectories(dirPath);
+			}
+
 			//데이터 저장
 			newsService.saveData(data, contentID);
 
@@ -109,29 +108,8 @@ public class LocalWatcherService implements NewsFileService {
 		}
 	}
 
-	@Override
-	public void updateProcess(File xmlFile) {
-		try {
-			log.info("------------------ start update process ------------------");
-			NewsData data = xmlParser.parseXml(xmlFile);
-			String contentID = data.getHeader().getContentID();
-			Path dirPath = Paths.get("C:\\newsData\\out", contentID);
-
-			//데이터 업데이트 및 insert
-			newsService.updateData(data, contentID);
-
-			//첨부파일 처리
-			fileProcess(data, dirPath);
-
-		} catch (IOException e) {
-			log.info(e.getMessage());
-		}
-
-	}
-
 	private void fileProcess(NewsData data, Path dirPath) throws IOException {
 		for (NewsData.AppendData appendData : data.getNewsContent().getAppendDataList()) {
-
 			String fileName = appendData.getFileName();
 			Path filePath = Paths.get("C:\\newsData\\in", fileName);
 

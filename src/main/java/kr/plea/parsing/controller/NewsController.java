@@ -12,11 +12,11 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/news")
 @RequiredArgsConstructor
-public class newsController {
+public class NewsController {
 	private final NewsService newsService;
 
 	@DeleteMapping("/{contentID}")
-	public ResponseEntity<Void> deleteNews(@PathVariable("contentID") String contentID) {
+	public ResponseEntity<Void> deleteData(@PathVariable("contentID") String contentID) {
 		newsService.deleteData(contentID);
 		return ResponseEntity.ok().build();
 	}
