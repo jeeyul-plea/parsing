@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.plea.parsing.data.NewsData;
+import kr.plea.parsing.data.dto.NewsContentFindDto;
 import kr.plea.parsing.mapper.NewsDataMapper;
 import lombok.RequiredArgsConstructor;
 
@@ -69,8 +71,19 @@ public class NewsService {
 	// 	return newsDataMapper.findContent(contentID);
 	// }
 
+	@Cacheable(key = "#contentID", value = "newsContent", cacheManager = "redisCacheManager")
+	public NewsContentFindDto findNews(String contentID) {
+		if(checkExist(contentID)) {
+			log.info("db를 통한 데이터 find");
+			NewsContentFindDto jsonData = newsDataMapper.findContent(contentID);
+			log.info("Fetched data: {}" , jsonData);
+			return jsonData;
+		}
+		else return null;
+	}
+
 	private boolean checkExist(String contentID) {
-		if (newsDataMapper.findOne(contentID) != null)
+		if (newsDataMapper.findContent(contentID) != null)
 			return true;
 		return false;
 	}

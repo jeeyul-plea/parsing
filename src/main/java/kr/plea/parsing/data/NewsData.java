@@ -25,10 +25,6 @@ public class NewsData {
 	@JsonProperty("NewsContent")
 	private NewsContent newsContent;
 
-	public NewsData(NewsData data) {
-		this.header = header;
-	}
-
 	@Data
 	@NoArgsConstructor
 	@JsonIgnoreProperties(ignoreUnknown = true)

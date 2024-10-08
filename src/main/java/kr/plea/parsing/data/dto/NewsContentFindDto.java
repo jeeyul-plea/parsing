@@ -3,15 +3,17 @@ package kr.plea.parsing.data.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class NewsContentFindDto {
 	private String contentId;
 	private String action;
 	private String serviceType;
-	private String sendData;
+	private String sendDate;
 	private String sendTime;
 	private String source;
 	private String writer;
@@ -29,7 +31,7 @@ public class NewsContentFindDto {
 		this.contentId = newsContent.getContentId();
 		this.action = newsContent.getAction();
 		this.serviceType = newsContent.getServiceType();
-		this.sendData = newsContent.getSendData();
+		this.sendDate = newsContent.getSendDate();
 		this.sendTime = newsContent.getSendTime();
 		this.source = newsContent.getSource();
 		this.writer = newsContent.getWriter();

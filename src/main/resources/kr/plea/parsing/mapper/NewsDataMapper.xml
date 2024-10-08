@@ -84,10 +84,10 @@
         false)
     </insert>
 
-    <select id="findContent" resultType="kr.plea.parsing.data.dto.NewsContentFindDto">
+    <select id="findContent" parameterType="String" resultType="kr.plea.parsing.data.dto.NewsContentFindDto">
         SELECT *
         FROM TB_NEWS_HISTORY
-        WHERE content_id = #{contentD}
+        WHERE content_id = #{contentID}
           and is_used = true
     </select>
 
@@ -108,7 +108,7 @@
     <select id="findOne" resultType="kr.plea.parsing.data.dto.NewsContentFindDto">
         SELECT *
         FROM TB_NEWS_CONTENT
-        WHERE content_id = #{contentD}
+        WHERE content_id = #{contentID}
     </select>
 
     <update id="setContentDeleteState">
